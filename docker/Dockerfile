@@ -23,8 +23,8 @@ RUN apt-get update && \
   a2enmod rewrite && \
   docker-php-ext-install intl pdo_mysql zip bcmath && \
   composer config -g process-timeout 3600 && \
-  composer config -g repos.packagist composer https://packagist.org \
-  composer update
+  composer config -g repos.packagist composer https://packagist.org
+  
 
 
 
