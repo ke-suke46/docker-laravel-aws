@@ -6,6 +6,14 @@ SHELL ["/bin/bash", "-oeux", "pipefail", "-c"]
 COPY ./php/php.ini /usr/local/etc/php
 COPY ./apache/httpd.conf /etc/apache2/sites-available/000-default.conf
 
+COPY --from=composer:2.0 /usr/bin/composer /usr/bin/composer
+# node command
+COPY --from=node /usr/local/bin /usr/local/bin
+# npm command
+COPY --from=node /usr/local/lib /usr/local/lib
+# yarn command
+COPY --from=node /opt /opt
+
 RUN apt-get update && \
   apt-get -y install git libicu-dev libonig-dev libzip-dev unzip locales && \
   apt-get clean && \
@@ -17,13 +25,7 @@ RUN apt-get update && \
   composer config -g process-timeout 3600 && \
   composer config -g repos.packagist composer https://packagist.org
 
-COPY --from=composer:2.0 /usr/bin/composer /usr/bin/composer
-# node command
-COPY --from=node /usr/local/bin /usr/local/bin
-# npm command
-COPY --from=node /usr/local/lib /usr/local/lib
-# yarn command
-COPY --from=node /opt /opt
+
 
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_HOME /composer
